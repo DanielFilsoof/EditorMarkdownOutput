@@ -1,45 +1,45 @@
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: whitesmoke;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: whitesmoke;
 }
 
 .ck-editor {
-  min-width: 500px;
+	min-width: 500px;
 }
 
 #saveData {
-  background-color: #605d5d;
-  max-width: 9%;
-  border-radius: 12px;
-  margin-top: 10px;
-  color: whitesmoke;
-  font-size: 14px;
-  padding: 7px;
-  text-align: center;
-  margin-left: 91%;
-  transition: all 0.5s;
+	background-color: #605d5d;
+	max-width: 9%;
+	border-radius: 12px;
+	margin-top: 10px;
+	color: whitesmoke;
+	font-size: 14px;
+	padding: 7px;
+	text-align: center;
+	margin-left: 91%;
+	transition: all 0.5s;
 }
 
 #saveData:hover {
-  box-shadow: 0 0 5px 5px #bec1c7;
+	box-shadow: 0 0 5px 5px #bec1c7;
 }
 
 #saveData:active {
-  opacity: 1;
-  transform: scale(0.8, 0.8);
+	opacity: 1;
+	transform: scale(0.8, 0.8);
 }
 
 .editor-container {
-  margin: 10px auto 0 auto;
+	margin: 10px auto 0 auto;
 }
 
 .markdown-container {
-  margin: 10px auto 0 auto;
+	margin: 10px auto 0 auto;
 }
 
 #markdown-output {
-  min-width: 500px;
-  min-height: 100px;
+	min-width: 500px;
+	min-height: 100px;
 }
