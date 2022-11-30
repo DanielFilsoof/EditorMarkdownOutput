@@ -26,7 +26,9 @@ let editor
 ClassicEditor.create(document.querySelector('#editor'), {
 	plugins: plugins,
 	toolbar: toolbar,
-	table: Table
+	table: {
+		defaultHeadings: { rows: 1 }
+	}
 })
 	.then(newEditor => {
 		console.log('Editor was initialized', newEditor)
