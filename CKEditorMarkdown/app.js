@@ -13,6 +13,7 @@ import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
+import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 
 const plugins = [
 	Essentials,
@@ -24,6 +25,7 @@ const plugins = [
 	Link,
 	List,
 	Image,
+	ImageInsert,
 	ImageToolbar,
 	ImageCaption,
 	ImageStyle,
@@ -43,7 +45,8 @@ const toolbar = [
 	'tableColumn',
 	'tableRow',
 	'|',
-	'Image',
+	'insertImage',
+	'|',
 	// 'imageStyle:block',
 	// 'imageStyle:side',
 	// '|',
