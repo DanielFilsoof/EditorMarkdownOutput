@@ -1,9 +1,9 @@
 // webpack.config.js
 
-'use strict'
+'use strict';
 
-const path = require('path')
-const { styles } = require('@ckeditor/ckeditor5-dev-utils')
+const path = require('path');
+const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 
 module.exports = {
 	// https://webpack.js.org/configuration/entry-context/
@@ -59,4 +59,4 @@ module.exports = {
 
 	// By default webpack logs warnings if the bundle is bigger than 200kb.
 	performance: { hints: false }
-}
+};
