@@ -7,6 +7,12 @@ import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown'
 import Table from '@ckeditor/ckeditor5-table/src/table'
 import { Link } from '@ckeditor/ckeditor5-link'
 import { List } from '@ckeditor/ckeditor5-list'
+import Image from '@ckeditor/ckeditor5-image/src/image'
+import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar'
+import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption'
+import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle'
+import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize'
+import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage'
 
 const plugins = [
 	Essentials,
@@ -16,7 +22,13 @@ const plugins = [
 	Markdown,
 	Table,
 	Link,
-	List
+	List,
+	Image,
+	ImageToolbar,
+	ImageCaption,
+	ImageStyle,
+	ImageResize,
+	LinkImage
 ]
 
 // find toolbar names for plugins in editor object like so: editor.plugins._context.ui.componentFactory._components.<entries>
@@ -31,6 +43,15 @@ const toolbar = [
 	'tableColumn',
 	'tableRow',
 	'|',
+	'Image',
+	// 'imageStyle:block',
+	// 'imageStyle:side',
+	// '|',
+	// 'toggleImageCaption',
+	// 'imageTextAlternative',
+	// '|',
+	// 'linkImage',
+	// '|',
 	'undo',
 	'redo'
 ]
@@ -42,6 +63,17 @@ ClassicEditor.create(document.querySelector('#editor'), {
 	toolbar: toolbar,
 	table: {
 		defaultHeadings: { rows: 1 }
+	},
+	image: {
+		toolbar: [
+			'imageStyle:block',
+			'imageStyle:side',
+			'|',
+			'toggleImageCaption',
+			'imageTextAlternative',
+			'|',
+			'linkImage'
+		]
 	}
 })
 	.then(newEditor => {
