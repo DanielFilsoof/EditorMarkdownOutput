@@ -5,13 +5,15 @@ import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold'
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic'
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown'
 import Table from '@ckeditor/ckeditor5-table/src/table'
+import { Link } from '@ckeditor/ckeditor5-link'
 
-const plugins = [Essentials, Paragraph, Bold, Italic, Markdown, Table]
+const plugins = [Essentials, Paragraph, Bold, Italic, Markdown, Table, Link]
 
 // find toolbar names for plugins in editor object like so: editor.plugins._context.ui.componentFactory._components.<entries>
 const toolbar = [
 	'Bold',
 	'Italic',
+	'link',
 	'|',
 	'insertTable',
 	'tableColumn',
