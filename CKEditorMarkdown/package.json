@@ -4,6 +4,7 @@
 		"build-prod": "webpack --mode production"
 	},
 	"dependencies": {
+		"@ckeditor/ckeditor5-alignment": "^35.3.2",
 		"@ckeditor/ckeditor5-basic-styles": "^35.3.2",
 		"@ckeditor/ckeditor5-dev-utils": "^31.1.13",
 		"@ckeditor/ckeditor5-editor-classic": "^35.3.2",

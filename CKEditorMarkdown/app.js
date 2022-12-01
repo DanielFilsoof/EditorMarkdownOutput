@@ -2,6 +2,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
+import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import Table from '@ckeditor/ckeditor5-table/src/table';
@@ -14,23 +15,28 @@ import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
+import { Alignment } from '@ckeditor/ckeditor5-alignment';
+import { ImageInsert } from '@ckeditor/ckeditor5-image';
 
 const plugins = [
 	Essentials,
 	Paragraph,
 	Bold,
 	Italic,
+	Underline,
 	Markdown,
 	Table,
 	Link,
 	List,
 	Image,
+	ImageInsert,
 	ImageToolbar,
 	ImageCaption,
 	ImageStyle,
 	ImageResize,
 	LinkImage,
-	Heading
+	Heading,
+	Alignment
 ];
 
 // find toolbar names for plugins in editor object like so: editor.plugins._context.ui.componentFactory._components.<entries>
@@ -38,6 +44,8 @@ const toolbar = [
 	'Heading',
 	'Bold',
 	'Italic',
+	'underline',
+	'alignment',
 	'link',
 	'bulletedList',
 	'numberedList',
@@ -46,7 +54,8 @@ const toolbar = [
 	'tableColumn',
 	'tableRow',
 	'|',
-	'Image',
+	'insertImage',
+	'|',
 	// 'imageStyle:block',
 	// 'imageStyle:side',
 	// '|',
