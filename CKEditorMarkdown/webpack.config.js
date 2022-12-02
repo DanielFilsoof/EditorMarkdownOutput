@@ -18,13 +18,12 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-
+				test: /[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
 				use: ['raw-loader']
 			},
 			{
-				test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
-
+				// specifify regex to target /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/ and @wiris/mathtype-html-integration-devkit/styles/styles.css
+				test: /.css$/,
 				use: [
 					{
 						loader: 'style-loader',

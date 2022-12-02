@@ -11,6 +11,7 @@ import { List } from '@ckeditor/ckeditor5-list';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import { ImageInsert } from '@ckeditor/ckeditor5-image';
+import MathType from '@wiris/mathtype-ckeditor5';
 
 const plugins = [
 	Essentials,
@@ -24,7 +25,8 @@ const plugins = [
 	List,
 	Image,
 	ImageInsert,
-	Heading
+	Heading,
+	MathType
 ];
 
 // find toolbar names for plugins in editor object like so: editor.plugins._context.ui.componentFactory._components.<entries>
@@ -40,6 +42,9 @@ const toolbar = [
 	'insertTable',
 	'|',
 	'insertImage',
+	'|',
+	'MathType',
+	'ChemType',
 	'|',
 	'undo',
 	'redo'
