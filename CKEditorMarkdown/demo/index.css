@@ -9,26 +9,41 @@ body {
 	min-width: 500px;
 }
 
-#saveData {
+.button-container {
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+button {
 	background-color: #605d5d;
-	max-width: 9%;
 	border-radius: 12px;
 	margin-top: 10px;
 	color: whitesmoke;
 	font-size: 14px;
 	padding: 7px;
 	text-align: center;
-	margin-left: 91%;
 	transition: all 0.5s;
 }
 
-#saveData:hover {
+button:hover {
 	box-shadow: 0 0 5px 5px #bec1c7;
 }
 
-#saveData:active {
+button:active {
 	opacity: 1;
 	transform: scale(0.8, 0.8);
+}
+
+#loadData {
+}
+
+#saveData {
+}
+
+#saveData:hover {
+}
+
+#saveData:active {
 }
 
 .editor-container {
