@@ -6,7 +6,6 @@ import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
-import { Link } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
@@ -20,7 +19,6 @@ const plugins = [
 	Markdown,
 	Table,
 	TableToolbar,
-	Link,
 	List,
 	Image,
 	ImageInsert,
@@ -32,8 +30,6 @@ const toolbar = [
 	'Heading',
 	'Bold',
 	'Italic',
-	'alignment',
-	'link',
 	'bulletedList',
 	'numberedList',
 	'|',
