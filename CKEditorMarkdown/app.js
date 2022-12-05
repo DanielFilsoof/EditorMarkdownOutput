@@ -61,13 +61,14 @@ ClassicEditor.create(document.querySelector('#editor'), {
 	}
 })
 	.then(newEditor => {
-		CKEditorInspector.attach(editor);
 		console.log('Editor was initialized', newEditor);
 		editor = newEditor;
 		console.log(
 			'toolbar names ',
 			editor.plugins._context.ui.componentFactory._components
 		);
+		// TODO add env dev variable condition for inspector attachment
+		CKEditorInspector.attach('markdown-output', editor);
 	})
 	.catch(error => {
 		console.error(error.stack);
@@ -75,6 +76,11 @@ ClassicEditor.create(document.querySelector('#editor'), {
 
 // Test that the html is parsed to markdown and the other way around
 // through local storage
+
+// Plan for mathml i markdown:
+// 1 parse med remarkjs https://github.com/remarkjs/react-markdown#appendix-a-html-in-markdown
+// 2 sanitize med en meget strict parser, e g https://www.npmjs.com/package/dompurify
+
 document.querySelector('#saveData').addEventListener('click', () => {
 	const editorData = editor.getData();
 	document.querySelector('#markdown-output').value = editorData;

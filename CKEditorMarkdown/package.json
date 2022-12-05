@@ -22,6 +22,7 @@
 		"@wiris/mathtype-ckeditor5": "^8.0.0",
 		"bootstrap": "^5.2.3",
 		"css-loader": "^5.2.7",
+		"mathml-to-latex": "^1.2.0",
 		"postcss-loader": "^4.3.0",
 		"raw-loader": "^4.0.2",
 		"style-loader": "^2.0.0",
