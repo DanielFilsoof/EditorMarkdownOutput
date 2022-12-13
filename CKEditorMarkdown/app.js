@@ -3,7 +3,6 @@ import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import { Link } from '@ckeditor/ckeditor5-link';
@@ -14,12 +13,23 @@ import { ImageInsert } from '@ckeditor/ckeditor5-image';
 import MathType from '@wiris/mathtype-ckeditor5';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 
+// md -> html
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+
+// html -> md
+import rehypeParse from 'rehype-parse'
+import rehypeRemark from 'rehype-remark'
+import remarkStringify from 'remark-stringify'
+
 const plugins = [
 	Essentials,
 	Paragraph,
 	Bold,
 	Italic,
-	Markdown,
 	Table,
 	TableToolbar,
 	Link,
@@ -61,13 +71,13 @@ ClassicEditor.create(document.querySelector('#editor'), {
 	}
 })
 	.then(newEditor => {
-		CKEditorInspector.attach(editor);
 		console.log('Editor was initialized', newEditor);
 		editor = newEditor;
 		console.log(
 			'toolbar names ',
 			editor.plugins._context.ui.componentFactory._components
 		);
+		CKEditorInspector.attach(editor);
 	})
 	.catch(error => {
 		console.error(error.stack);
@@ -75,16 +85,39 @@ ClassicEditor.create(document.querySelector('#editor'), {
 
 // Test that the html is parsed to markdown and the other way around
 // through local storage
-document.querySelector('#saveData').addEventListener('click', () => {
+document.querySelector('#saveData').addEventListener('click', async () => {
 	const editorData = editor.getData();
-	document.querySelector('#markdown-output').value = editorData;
-	window.localStorage.setItem('editorContent', editorData);
+	const editorDataToMd = await htmlToMarkdown(editorData);
+	document.querySelector('#markdown-output').value = editorDataToMd;
+	window.localStorage.setItem('editorContent', editorDataToMd);
 });
 
-document.querySelector('#loadData').addEventListener('click', () => {
+document.querySelector('#loadData').addEventListener('click', async () => {
 	// load data to editorData
-	const editorData = window.localStorage.getItem('editorContent');
-	console.log('editorData fra local storage: ', editorData);
-	document.querySelector('#markdown-output').value = editorData;
-	editor.setData(editorData);
+	const editorDataMd = window.localStorage.getItem('editorContent');
+	const editorDataHtml = await markdownToHtml(editorDataMd);
+	document.querySelector('#markdown-output').value = editorDataMd;
+	editor.setData(editorDataHtml);
 });
+
+async function htmlToMarkdown(html) {
+	const md = await unified()
+		.use(rehypeParse) // Parse HTML to a syntax tree
+		.use(remarkGfm)
+		.use(rehypeRemark) // Turn HTML syntax tree to markdown syntax tree
+		.use(remarkStringify) // Serialize HTML syntax tree
+		.process(html);
+
+	return String(md);
+}
+
+async function markdownToHtml(markdown) {
+	const html = await unified()
+		.use(remarkParse) // Parse markdown content to a syntax tree
+		.use(remarkGfm)
+		.use(remarkRehype) // Turn markdown syntax tree to HTML syntax tree, ignoring embedded HTML
+		.use(rehypeStringify) // Serialize HTML syntax tree
+		.process(markdown)
+
+	return String(html);
+}
