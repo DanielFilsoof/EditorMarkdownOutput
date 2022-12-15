@@ -34,6 +34,7 @@
 		"remark-parse": "^10.0.1",
 		"remark-rehype": "^10.1.0",
 		"remark-stringify": "^10.0.2",
+		"showdown": "^2.1.0",
 		"style-loader": "^2.0.0",
 		"unified": "^10.1.2",
 		"webpack": "^5.75.0",
