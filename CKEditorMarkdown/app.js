@@ -12,21 +12,7 @@ import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import { ImageInsert } from '@ckeditor/ckeditor5-image';
 import MathType from '@wiris/mathtype-ckeditor5';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
-
-// md -> html
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-
-// html -> md
-import rehypeParse from 'rehype-parse';
-import rehypeRemark from 'rehype-remark';
-import remarkStringify from 'remark-stringify';
-
-import rehypeRaw from 'rehype-raw';
-import {toHtml} from 'hast-util-to-html';
+import { htmlToMarkdown, markdownToHtml } from './bidirectionalHtmlMdParser';
 
 const plugins = [
 	Essentials,
@@ -65,7 +51,8 @@ const toolbar = [
 
 let editor;
 let editorDom;
-const matImgStreng = '\'<img class="Wirisformula" style="max-width:none;vertical-align:-4px;" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fmathml-extension%22%20height%3D%2240%22%20width%3D%2251%22%20wrs%3Abaseline%3D%2236%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmsqrt%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmn%3E3%3C%2Fmn%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsqrt%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Cpolyline%20fill%3D%22none%22%20points%3D%2212%2C-34%2011%2C-34%205%2C0%202%2C-13%22%20stroke%3D%22%23000000%22%20stroke-linecap%3D%22square%22%20stroke-width%3D%221%22%20transform%3D%22translate(0.5%2C37.5)%22%2F%3E%3Cpolyline%20fill%3D%22none%22%20points%3D%225%2C0%202%2C-13%200%2C-12%22%20stroke%3D%22%23000000%22%20stroke-linecap%3D%22square%22%20stroke-width%3D%221%22%20transform%3D%22translate(0.5%2C37.5)%22%2F%3E%3Cline%20stroke%3D%22%23000000%22%20stroke-linecap%3D%22square%22%20stroke-width%3D%221%22%20x1%3D%2212.5%22%20x2%3D%2249.5%22%20y1%3D%223.5%22%20y2%3D%223.5%22%2F%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%2218.5%22%20y%3D%2236%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%20x%3D%2226.5%22%20y%3D%2229%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2210%22%20text-anchor%3D%22middle%22%20x%3D%2233.5%22%20y%3D%2223%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%228%22%20text-anchor%3D%22middle%22%20x%3D%2238.5%22%20y%3D%2219%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%228%22%20text-anchor%3D%22middle%22%20x%3D%2242.5%22%20y%3D%2215%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%228%22%20text-anchor%3D%22middle%22%20x%3D%2246.5%22%20y%3D%2211%22%3E3%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«msqrt»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«mn»3«/mn»«/msup»«/msup»«/msup»«/msup»«/msup»«/msqrt»«/math»" alt="square root of 3 to the power of 3 to the power of 3 to the power of 3 to the power of 3 cubed end exponent end exponent end exponent end exponent end root" role="math" width="51" height="40" align="middle">\'\t\t);\n'
+const matImgStreng =
+	'\'<img class="Wirisformula" style="max-width:none;vertical-align:-4px;" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fmathml-extension%22%20height%3D%2240%22%20width%3D%2251%22%20wrs%3Abaseline%3D%2236%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmsqrt%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmsup%3E%3Cmn%3E3%3C%2Fmn%3E%3Cmn%3E3%3C%2Fmn%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsup%3E%3C%2Fmsqrt%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Cpolyline%20fill%3D%22none%22%20points%3D%2212%2C-34%2011%2C-34%205%2C0%202%2C-13%22%20stroke%3D%22%23000000%22%20stroke-linecap%3D%22square%22%20stroke-width%3D%221%22%20transform%3D%22translate(0.5%2C37.5)%22%2F%3E%3Cpolyline%20fill%3D%22none%22%20points%3D%225%2C0%202%2C-13%200%2C-12%22%20stroke%3D%22%23000000%22%20stroke-linecap%3D%22square%22%20stroke-width%3D%221%22%20transform%3D%22translate(0.5%2C37.5)%22%2F%3E%3Cline%20stroke%3D%22%23000000%22%20stroke-linecap%3D%22square%22%20stroke-width%3D%221%22%20x1%3D%2212.5%22%20x2%3D%2249.5%22%20y1%3D%223.5%22%20y2%3D%223.5%22%2F%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%2218.5%22%20y%3D%2236%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%20x%3D%2226.5%22%20y%3D%2229%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2210%22%20text-anchor%3D%22middle%22%20x%3D%2233.5%22%20y%3D%2223%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%228%22%20text-anchor%3D%22middle%22%20x%3D%2238.5%22%20y%3D%2219%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%228%22%20text-anchor%3D%22middle%22%20x%3D%2242.5%22%20y%3D%2215%22%3E3%3C%2Ftext%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%228%22%20text-anchor%3D%22middle%22%20x%3D%2246.5%22%20y%3D%2211%22%3E3%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«msqrt»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«msup»«mn»3«/mn»«mn»3«/mn»«/msup»«/msup»«/msup»«/msup»«/msup»«/msqrt»«/math»" alt="square root of 3 to the power of 3 to the power of 3 to the power of 3 to the power of 3 cubed end exponent end exponent end exponent end exponent end root" role="math" width="51" height="40" align="middle">\'\t\t);\n';
 
 ClassicEditor.create(document.querySelector('#editor'), {
 	plugins: plugins,
@@ -76,7 +63,9 @@ ClassicEditor.create(document.querySelector('#editor'), {
 	}
 })
 	.then(newEditor => {
-		editorDom = document.getElementsByClassName('ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred');
+		editorDom = document.getElementsByClassName(
+			'ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred'
+		);
 		editor = newEditor;
 		// editor.setData(matImgStreng)
 		editorDom[0].innerHTML = matImgStreng;
@@ -106,39 +95,4 @@ document.querySelector('#loadData').addEventListener('click', async () => {
 	const editorDataHtml = await markdownToHtml(editorDataMd);
 	document.querySelector('#markdown-output').value = editorDataMd;
 	editor.setData(editorDataHtml);
-	// editorDom[0].innerHTML = editorDataHtml;
 });
-
-async function htmlToMarkdown(html) {
-	const md = await unified()
-		.use(rehypeParse)
-		.use(rehypeRemark,
-			{
-				handlers: {
-					img(h, node) {
-						console.table(h, node);
-						return h(node, 'html', toHtml(node))
-					}
-				}
-			})
-		.use(remarkGfm)
-		.use(remarkStringify)
-		.process(html);
-
-	// TODO sanitize
-
-	return String(md);
-}
-
-async function markdownToHtml(markdown) {
-	const html = await unified()
-		.use(remarkParse)
-		.use(remarkGfm)
-		.use(remarkRehype, {allowDangerousHtml: true})
-		.use(rehypeRaw)
-		.use(rehypeStringify, {allowDangerousHtml: true})
-		.process(markdown);
-
-	// TODO sanitize
-	return String(html);
-}
