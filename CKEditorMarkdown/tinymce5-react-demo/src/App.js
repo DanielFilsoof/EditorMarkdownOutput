@@ -48,15 +48,15 @@ export default function App() {
               height: 500,
               menubar: false,
               plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
+                'autolink lists image searchreplace',
+                'media table paste wordcount hr'
               ],
+                lists_indent_on_tab: false,
               toolbar: 'undo redo | formatselect | ' +
-                  'bold italic backcolor | alignleft aligncenter ' +
-                  'alignright alignjustify | bullist numlist outdent indent | ' +
-                  'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry | ' +
-                  'removeformat | help',
+                  'bold italic | ' +
+                  'bullist numlist | ' +
+                  'table image hr ' +
+                  'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry | ',
               content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
             }}
             value={editorContent}
