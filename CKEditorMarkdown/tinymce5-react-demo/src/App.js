@@ -9,8 +9,11 @@ export default function App() {
 
     const save = async () => {
         if (editorRef.current) {
+            // const editorContent = editorRef.current.getContent()
+            const editorContent = document.getElementsByClassName('tox-edit-area__iframe')[0].contentDocument.body.innerHTML
+
             const editorContentInMd = await htmlToMarkdown(
-                editorRef.current.getContent()
+                editorContent
             );
             window.localStorage.setItem('editorContent', editorContentInMd);
             document.getElementById('text');
@@ -24,12 +27,18 @@ export default function App() {
 
         setEditorContent(editorContentHtml);
     };
+
+    const handleEditorChange = (content, editor) => {
+        setEditorContent(content);
+    };
+
     console.log(editorRef.current)
   return (
       <>
         <Editor
             onInit={(evt, editor) => editorRef.current = editor}
             tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
+            onEditorChange={handleEditorChange}
             initialValue="<p>This is the initial content of the editor.</p>"
             init={{
                 external_plugins: {
